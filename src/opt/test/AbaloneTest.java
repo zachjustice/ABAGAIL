@@ -1,15 +1,22 @@
 package opt.test;
 
-import dist.*;
-import opt.*;
-import opt.example.*;
-import opt.ga.*;
-import shared.*;
-import func.nn.backprop.*;
+import func.nn.backprop.BackPropagationNetwork;
+import func.nn.backprop.BackPropagationNetworkFactory;
+import opt.OptimizationAlgorithm;
+import opt.RandomizedHillClimbing;
+import opt.SimulatedAnnealing;
+import opt.example.NeuralNetworkOptimizationProblem;
+import opt.ga.StandardGeneticAlgorithm;
+import shared.DataSet;
+import shared.ErrorMeasure;
+import shared.Instance;
+import shared.SumOfSquaresError;
 
-import java.util.*;
-import java.io.*;
-import java.text.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.text.DecimalFormat;
+import java.util.Scanner;
 
 /**
  * Implementation of randomized hill climbing, simulated annealing, and genetic algorithm to
@@ -85,7 +92,7 @@ public class AbaloneTest {
     }
 
     private static void train(OptimizationAlgorithm oa, BackPropagationNetwork network, String oaName) {
-        System.out.println("\nError results for " + oaName + "\n---------------------------");
+        //System.out.println("\nError results for " + oaName + "\n---------------------------");
 
         for(int i = 0; i < trainingIterations; i++) {
             oa.train();
@@ -100,7 +107,7 @@ public class AbaloneTest {
                 error += measure.value(output, example);
             }
 
-            System.out.println(df.format(error));
+            //System.out.println(df.format(error));
         }
     }
 

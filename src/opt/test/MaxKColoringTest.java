@@ -1,36 +1,16 @@
 package opt.test;
 
-import java.util.Arrays;
-import java.util.Random;
-
-import opt.ga.MaxKColorFitnessFunction;
-import opt.ga.Vertex;
-
 import dist.DiscreteDependencyTree;
 import dist.DiscretePermutationDistribution;
-import dist.DiscreteUniformDistribution;
 import dist.Distribution;
-import opt.DiscreteChangeOneNeighbor;
-import opt.EvaluationFunction;
-import opt.SwapNeighbor;
-import opt.GenericHillClimbingProblem;
-import opt.HillClimbingProblem;
-import opt.NeighborFunction;
-import opt.RandomizedHillClimbing;
-import opt.SimulatedAnnealing;
-import opt.ga.CrossoverFunction;
-import opt.ga.DiscreteChangeOneMutation;
-import opt.ga.SingleCrossOver;
-import opt.ga.SwapMutation;
-import opt.ga.GenericGeneticAlgorithmProblem;
-import opt.ga.GeneticAlgorithmProblem;
-import opt.ga.MutationFunction;
-import opt.ga.StandardGeneticAlgorithm;
-import opt.ga.UniformCrossOver;
+import opt.*;
+import opt.ga.*;
 import opt.prob.GenericProbabilisticOptimizationProblem;
 import opt.prob.MIMIC;
 import opt.prob.ProbabilisticOptimizationProblem;
 import shared.FixedIterationTrainer;
+
+import java.util.Random;
 
 /**
  * 
@@ -58,10 +38,13 @@ public class MaxKColoringTest {
             	 vertex.getAadjacencyColorMatrix().add(random.nextInt(N*L));
             }
         }
-        /*for (int i = 0; i < N; i++) {
+        /*
+        for (int i = 0; i < N; i++) {
             Vertex vertex = vertices[i];
             System.out.println(Arrays.toString(vertex.getAadjacencyColorMatrix().toArray()));
-        }*/
+        }
+        */
+        System.out.println("---------------");
         // for rhc, sa, and ga we use a permutation based encoding
         MaxKColorFitnessFunction ef = new MaxKColorFitnessFunction(vertices);
         Distribution odd = new DiscretePermutationDistribution(K);
@@ -75,7 +58,7 @@ public class MaxKColoringTest {
         ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
         
         long starttime = System.currentTimeMillis();
-        RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);      
+        RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
         FixedIterationTrainer fit = new FixedIterationTrainer(rhc, 20000);
         fit.train();
         System.out.println("RHC: " + ef.value(rhc.getOptimal()));
