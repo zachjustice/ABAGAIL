@@ -14,7 +14,9 @@ import shared.writer.CSVWriter;
 import java.io.IOException;
 
 /**
- * Created by zachjustice on 3/6/16.
+ * Runs optimization problems and prints results to file.
+ * @author Zach Justice zachjustice123@gmail.com
+ * @version 1.0
  */
 public class OptimizationTester {
     private EvaluationFunction ef;
