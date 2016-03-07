@@ -1,8 +1,8 @@
 package opt.example;
 
-import util.linalg.Vector;
 import opt.EvaluationFunction;
 import shared.Instance;
+import util.linalg.Vector;
 
 /**
  * A four peaks evaluation function
@@ -10,6 +10,7 @@ import shared.Instance;
  * @version 1.0
  */
 public class FourPeaksEvaluationFunction implements EvaluationFunction {
+
     /**
      * The t value
      */
