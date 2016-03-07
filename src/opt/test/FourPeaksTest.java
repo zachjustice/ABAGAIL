@@ -36,6 +36,11 @@ public class FourPeaksTest {
         ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
 
         OptimizationTester tester = new OptimizationTester(ef, hcp, gap, pop, "fourpeaks_results.csv");
-        tester.test(18, 1000, 5);
+        //tester.test(18, 1000, 5, ef);
+        Double[] results = tester.simpleMaximizationTest(ef);
+
+        for(Double result : results) {
+            System.out.println(result);
+        }
     }
 }

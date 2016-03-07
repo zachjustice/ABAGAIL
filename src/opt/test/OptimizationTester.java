@@ -9,6 +9,8 @@ import opt.ga.StandardGeneticAlgorithm;
 import opt.prob.MIMIC;
 import opt.prob.ProbabilisticOptimizationProblem;
 import shared.FixedIterationTrainer;
+import shared.MaximizationTrainer;
+import shared.Trainer;
 import shared.writer.CSVWriter;
 
 import java.io.IOException;
@@ -19,29 +21,27 @@ import java.io.IOException;
  * @version 1.0
  */
 public class OptimizationTester {
-    private EvaluationFunction ef;
     private HillClimbingProblem hcp;
     private GeneticAlgorithmProblem gap;
     private ProbabilisticOptimizationProblem pop;
     private String resultsFileName;
 
     public OptimizationTester(EvaluationFunction ef, HillClimbingProblem hcp, GeneticAlgorithmProblem gap, ProbabilisticOptimizationProblem pop, String resultsFileName) {
-        this.ef = ef;
         this.hcp = hcp;
         this.gap = gap;
         this.pop = pop;
         this.resultsFileName = resultsFileName;
     }
 
-    public void test(int numIterations, int iterationStep, int numRepeats) throws IOException {
-        Double[][][] results = new Double[4][numIterations][numRepeats];
+    public void test(int numIterations, int iterationStep, int numRepeats, EvaluationFunction ef) throws IOException {
+        Double[][][] results = new Double[4][numRepeats][numIterations];
 
         for (int i = iterationStep; i <= numIterations * iterationStep; i += iterationStep) {
             System.out.println("Iterations: " + i);
             for (int j = 0; j < numRepeats; j++) {
                 System.out.print(" " + j);
                 RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
-                FixedIterationTrainer fit = new FixedIterationTrainer(rhc, i);
+                Trainer fit = new FixedIterationTrainer(rhc, i);
                 fit.train();
                 results[0][(i / iterationStep) - 1][j] = ef.value(rhc.getOptimal());
                 //System.out.println(ef.value(rhc.getOptimal()));
@@ -67,6 +67,40 @@ public class OptimizationTester {
             System.out.println();
         }
 
+        writeResults(results, numIterations, iterationStep, numRepeats);
+    }
+
+    public Double[] simpleMaximizationTest(EvaluationFunction ef) {
+        Double[] results = new Double[4];
+
+        RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
+        Trainer fit = new MaximizationTrainer(rhc, ef);
+        results[0] = fit.train();
+        ef.value(rhc.getOptimal());
+        System.out.println(ef.value(rhc.getOptimal()));
+
+        SimulatedAnnealing sa = new SimulatedAnnealing(100, .95, hcp);
+        fit = new MaximizationTrainer(sa, ef);
+        results[1] = fit.train();
+        ef.value(sa.getOptimal());
+        System.out.println(ef.value(sa.getOptimal()));
+
+        StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
+        fit = new MaximizationTrainer(sa, ef);
+        results[2] = fit.train();
+        ef.value(ga.getOptimal());
+        System.out.println(ef.value(ga.getOptimal()));
+
+        MIMIC mimic = new MIMIC(200, 100, pop);
+        fit = new MaximizationTrainer(mimic, ef);
+        results[3] = fit.train();
+        ef.value(mimic.getOptimal());
+        System.out.println(ef.value(mimic.getOptimal()));
+
+        return results;
+    }
+
+    private void writeResults(Double[][][] results, int numIterations, int iterationStep, int numRepeats) throws IOException {
         // fields are number of iterations each algorithm is tested at
         String[] fields = new String[numIterations];
 
@@ -79,9 +113,9 @@ public class OptimizationTester {
         csvWriter.open();
 
         for (Double[][] result : results) { // loop over each algorithm
-            for (int k = 0; k < numRepeats; k++) { // loop over each repeat of jth iterations
-                for (int j = 0; j < numIterations; j++) { // loop over iterations for that repeat
-                    csvWriter.write(result[j][k] + "");
+            for (Double[] aResult : result) { // loop over each repeat of jth iterations
+                for (int k = 0; k < result[k].length; k++) { // loop over iterations for that repeat
+                    csvWriter.write(aResult[k] + "");
                 }
                 csvWriter.nextRecord();
             }
@@ -91,5 +125,6 @@ public class OptimizationTester {
         }
 
         csvWriter.close();
+
     }
 }

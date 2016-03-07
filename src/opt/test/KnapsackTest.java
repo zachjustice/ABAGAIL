@@ -59,6 +59,6 @@ public class KnapsackTest {
         ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
 
         OptimizationTester tester = new OptimizationTester(ef, hcp, gap, pop, "knapsack_results.csv");
-        tester.test(18, 1000, 10);
+        tester.test(18, 1000, 10, ef);
     }
 }
