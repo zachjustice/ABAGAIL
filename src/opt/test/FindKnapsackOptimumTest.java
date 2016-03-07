@@ -32,7 +32,7 @@ public class FindKnapsackOptimumTest {
         int[] inputs = {20,40,40};
         int[] iterations = {600000, 600000, 600000};
 
-        CSVWriter csvWriter = new CSVWriter("optimum_fourpeaks.csv", fields);
+        CSVWriter csvWriter = new CSVWriter("find_optimum_knapsack.csv", fields);
         csvWriter.open();
 
         for(int i = 0; i < 6; i++) {

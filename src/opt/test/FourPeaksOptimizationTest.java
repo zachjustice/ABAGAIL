@@ -52,8 +52,10 @@ public class FourPeaksOptimizationTest {
 
             for (Double[] result : results) {
                 for(double aResult : result) {
+                    System.out.print( aResult  + " ");
                     csvWriter.write(aResult + "");
                 }
+                System.out.println();
                 csvWriter.nextRecord();
             }
         }
