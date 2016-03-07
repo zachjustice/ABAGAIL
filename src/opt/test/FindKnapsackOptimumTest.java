@@ -50,23 +50,33 @@ public class FindKnapsackOptimumTest {
             Arrays.fill(ranges, COPIES_EACH + 1);
             double knapsackVolume = MAX_VOLUME * knapsackSize * COPIES_EACH * .4;
 
+            double start = System.currentTimeMillis();
             EvaluationFunction ef = new KnapsackEvaluationFunction(weights, volumes, knapsackVolume, copies);
             Distribution odd = new DiscreteUniformDistribution(ranges);
             MutationFunction mf = new DiscreteChangeOneMutation(ranges);
             CrossoverFunction cf = new UniformCrossOver();
             GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
             StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
+            double end = System.currentTimeMillis();
+            System.out.println("time to setup: " + (end - start));
 
             int cumulative_iterations = 0;
             for(int j = 50000; j <= iterations[i]; j+= 50000) {
                 FixedIterationTrainer fit = new FixedIterationTrainer(ga, 50000);
+                start = System.currentTimeMillis();
                 fit.train();
+                end = System.currentTimeMillis();
+                System.out.println("time to setup: " + (end - start));
 
+                start = System.currentTimeMillis();
                 cumulative_iterations += 50000;
                 double optimum = ef.value(ga.getOptimal());
                 csvWriter.write(cumulative_iterations+"");
                 csvWriter.write(optimum+"");
                 csvWriter.nextRecord();
+
+                end  = System.currentTimeMillis();
+                System.out.println("time to write: " + (end - start));
             }
 
             csvWriter.write(" ");
