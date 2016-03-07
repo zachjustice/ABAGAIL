@@ -22,27 +22,18 @@ public class MaximizationTrainer implements Trainer{
     /**
      * Value to train towards. Once this value is reached, stopped training.
      */
-    private double maximalValue;
-
-    /**
-     * Make a new fixed iterations trainer
-     * @param t the trainer
-     * @param ef used to evaluate if optimum has been reached.
-     */
-    public MaximizationTrainer(Trainer t, EvaluationFunction ef) {
-        this(t, ef, -1);
-    }
+    private double maximizationValue;
 
     /**
      * Make a new fixed iterations trainer
      * @param t the trainer
      * @param ef used to evaulate if optimum has been reached
-     * @param maximalValue after reaching this value the trainer stops. Default -1.
+     * @param maximizationValue after reaching this value the trainer stops. Default -1.
      */
-    public MaximizationTrainer(Trainer t, EvaluationFunction ef, double maximalValue) {
+    public MaximizationTrainer(Trainer t, EvaluationFunction ef, double maximizationValue) {
         trainer = t;
         this.ef = ef;
-        this.maximalValue = maximalValue;
+        this.maximizationValue = maximizationValue;
     }
 
     /**
@@ -50,17 +41,13 @@ public class MaximizationTrainer implements Trainer{
      */
     public double train() {
         int evaluations = 0;
-        int isMaximizedCounter = 0;
-        double bestOptimum = -1;
-        double prevOptimum;
         double currOptimum = 0;
-        boolean isMaximized = false;
+        double bestOptimum = 0;
 
-        while(!isMaximized) {
+        while(currOptimum < maximizationValue) {
             trainer.train();
             evaluations++;
             Instance optimum = ((OptimizationAlgorithm)trainer).getOptimal();
-            prevOptimum = currOptimum;
             currOptimum = ef.value(optimum);
 
             if(currOptimum > bestOptimum)
@@ -68,20 +55,7 @@ public class MaximizationTrainer implements Trainer{
                 bestOptimum = currOptimum;
             }
 
-            if(maximalValue == -1)
-            {
-                if(prevOptimum == bestOptimum && ++isMaximizedCounter > 100)
-                {
-                    isMaximized = true;
-                }
-            }
-            else
-            {
-                if(currOptimum == maximalValue && ++isMaximizedCounter > 100)
-                {
-                    isMaximized = true;
-                }
-            }
+            System.out.println("Evaluations: " + evaluations + "CurrOptimium: " + currOptimum + " bestOptimum: " + bestOptimum);
         }
 
         return evaluations;
