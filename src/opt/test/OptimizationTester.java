@@ -78,7 +78,7 @@ public class OptimizationTester {
         double start = System.nanoTime();
         results[0][0] = fit.train();
         double end = System.nanoTime();
-        results[0][1] = end - start;
+        results[0][1] = (end - start)/ Math.pow(10,9);
         results[0][2] = ef.value(rhc.getOptimal());
 
         SimulatedAnnealing sa = new SimulatedAnnealing(100, .95, hcp);
@@ -86,7 +86,7 @@ public class OptimizationTester {
         start = System.nanoTime();
         results[1][0] = fit.train();
         end = System.nanoTime();
-        results[1][1] = end - start;
+        results[1][1] = (end - start)/ Math.pow(10,9);
         results[1][2] = ef.value(rhc.getOptimal());
 
         StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
@@ -94,7 +94,7 @@ public class OptimizationTester {
         start = System.nanoTime();
         results[2][0] = fit.train();
         end = System.nanoTime();
-        results[2][1] = end - start;
+        results[2][1] = (end - start)/ Math.pow(10,9);
         results[2][2] = ef.value(rhc.getOptimal());
 
         MIMIC mimic = new MIMIC(200, 100, pop);
@@ -102,7 +102,7 @@ public class OptimizationTester {
         start = System.nanoTime();
         results[3][0] = fit.train();
         end = System.nanoTime();
-        results[3][1] = end - start;
+        results[3][1] = (end - start)/ Math.pow(10,9);
         results[3][2] = ef.value(rhc.getOptimal());
 
         return results;
