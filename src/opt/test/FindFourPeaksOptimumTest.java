@@ -11,11 +11,11 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * Code to find optimum for an optimization problem
+ * Run simulated annealing a bunch to determine optimum.
  * @author Zach Justice zachjustice123@gmail.com
  * @version 1.0
  */
-public class FindOptimumTest {
+public class FindFourPeaksOptimumTest {
     /** The n value */
     private static final int N = 200;
 
