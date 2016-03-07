@@ -70,32 +70,40 @@ public class OptimizationTester {
         writeResults(results, numIterations, iterationStep, numRepeats);
     }
 
-    public Double[] simpleMaximizationTest(EvaluationFunction ef, double maximizationValue) {
-        Double[] results = new Double[4];
+    public Double[][] simpleMaximizationTest(EvaluationFunction ef, double maximizationValue) {
+        Double[][] results = new Double[4][3];
 
         RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
         Trainer fit = new MaximizationTrainer(rhc, ef, maximizationValue);
-        results[0] = fit.train();
-        ef.value(rhc.getOptimal());
-        System.out.println(ef.value(rhc.getOptimal()));
+        double start = System.nanoTime();
+        results[0][0] = fit.train();
+        double end = System.nanoTime();
+        results[0][1] = end - start;
+        results[0][2] = ef.value(rhc.getOptimal());
 
         SimulatedAnnealing sa = new SimulatedAnnealing(100, .95, hcp);
         fit = new MaximizationTrainer(sa, ef, maximizationValue);
-        results[1] = fit.train();
-        ef.value(sa.getOptimal());
-        System.out.println(ef.value(sa.getOptimal()));
+        start = System.nanoTime();
+        results[1][0] = fit.train();
+        end = System.nanoTime();
+        results[1][1] = end - start;
+        results[1][2] = ef.value(rhc.getOptimal());
 
         StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
-        fit = new MaximizationTrainer(sa, ef, maximizationValue);
-        results[2] = fit.train();
-        ef.value(ga.getOptimal());
-        System.out.println(ef.value(ga.getOptimal()));
+        fit = new MaximizationTrainer(ga, ef, maximizationValue);
+        start = System.nanoTime();
+        results[2][0] = fit.train();
+        end = System.nanoTime();
+        results[2][1] = end - start;
+        results[2][2] = ef.value(rhc.getOptimal());
 
         MIMIC mimic = new MIMIC(200, 100, pop);
         fit = new MaximizationTrainer(mimic, ef, maximizationValue);
-        results[3] = fit.train();
-        ef.value(mimic.getOptimal());
-        System.out.println(ef.value(mimic.getOptimal()));
+        start = System.nanoTime();
+        results[3][0] = fit.train();
+        end = System.nanoTime();
+        results[3][1] = end - start;
+        results[3][2] = ef.value(rhc.getOptimal());
 
         return results;
     }
