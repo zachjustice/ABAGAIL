@@ -70,29 +70,29 @@ public class OptimizationTester {
         writeResults(results, numIterations, iterationStep, numRepeats);
     }
 
-    public Double[] simpleMaximizationTest(EvaluationFunction ef) {
+    public Double[] simpleMaximizationTest(EvaluationFunction ef, double maximizationValue) {
         Double[] results = new Double[4];
 
         RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
-        Trainer fit = new MaximizationTrainer(rhc, ef);
+        Trainer fit = new MaximizationTrainer(rhc, ef, maximizationValue);
         results[0] = fit.train();
         ef.value(rhc.getOptimal());
         System.out.println(ef.value(rhc.getOptimal()));
 
         SimulatedAnnealing sa = new SimulatedAnnealing(100, .95, hcp);
-        fit = new MaximizationTrainer(sa, ef);
+        fit = new MaximizationTrainer(sa, ef, maximizationValue);
         results[1] = fit.train();
         ef.value(sa.getOptimal());
         System.out.println(ef.value(sa.getOptimal()));
 
         StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
-        fit = new MaximizationTrainer(sa, ef);
+        fit = new MaximizationTrainer(sa, ef, maximizationValue);
         results[2] = fit.train();
         ef.value(ga.getOptimal());
         System.out.println(ef.value(ga.getOptimal()));
 
         MIMIC mimic = new MIMIC(200, 100, pop);
-        fit = new MaximizationTrainer(mimic, ef);
+        fit = new MaximizationTrainer(mimic, ef, maximizationValue);
         results[3] = fit.train();
         ef.value(mimic.getOptimal());
         System.out.println(ef.value(mimic.getOptimal()));
