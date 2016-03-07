@@ -58,7 +58,7 @@ public class KnapsackTest {
         GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
         ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
 
-        OptimizationTester tester = new OptimizationTester(ef, hcp, gap, pop, "knapsack_results.csv");
+        OptimizationTester tester = new OptimizationTester(hcp, gap, pop, "knapsack_results.csv");
         tester.test(18, 1000, 10, ef);
     }
 }

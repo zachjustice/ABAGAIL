@@ -26,7 +26,7 @@ public class OptimizationTester {
     private ProbabilisticOptimizationProblem pop;
     private String resultsFileName;
 
-    public OptimizationTester(EvaluationFunction ef, HillClimbingProblem hcp, GeneticAlgorithmProblem gap, ProbabilisticOptimizationProblem pop, String resultsFileName) {
+    public OptimizationTester(HillClimbingProblem hcp, GeneticAlgorithmProblem gap, ProbabilisticOptimizationProblem pop, String resultsFileName) {
         this.hcp = hcp;
         this.gap = gap;
         this.pop = pop;
