@@ -29,14 +29,13 @@ public class FindKnapsackOptimumTest {
     public static void main(String[] args) throws IOException {
 
         String[] fields = {"iterations", "optimum"};
-        int[] inputs = {20,40,40};
+        int[] inputs = {20,30,40};
         int[] iterations = {600000, 600000, 600000};
 
-        CSVWriter csvWriter = new CSVWriter("find_optimum_knapsack.csv", fields);
-        csvWriter.open();
-
-        for(int i = 0; i < 6; i++) {
-            System.out.println(inputs[i]);
+        for(int i = 0; i <= 3; i++) {
+            CSVWriter csvWriter = new CSVWriter("find_optimum_knapsack_" + inputs[i] + ".csv", fields);
+            csvWriter.open();
+            System.out.println("Knapsack size: " + inputs[i]);
 
             int knapsackSize = inputs[i];
             int[] copies = new int[knapsackSize];
@@ -56,22 +55,25 @@ public class FindKnapsackOptimumTest {
             MutationFunction mf = new DiscreteChangeOneMutation(ranges);
             CrossoverFunction cf = new UniformCrossOver();
             GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
-
             StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
-            for(int j = 50000; j <= inputs[i]; j+= 50000) {
-                FixedIterationTrainer fit = new FixedIterationTrainer(ga, iterations[i]);
+
+            int cumulative_iterations = 0;
+            for(int j = 50000; j <= iterations[i]; j+= 50000) {
+                FixedIterationTrainer fit = new FixedIterationTrainer(ga, 50000);
                 fit.train();
 
+                cumulative_iterations += 50000;
                 double optimum = ef.value(ga.getOptimal());
-                csvWriter.write(inputs[i]+"");
+                csvWriter.write(cumulative_iterations+"");
                 csvWriter.write(optimum+"");
                 csvWriter.nextRecord();
             }
 
-            System.out.println(inputs[i] + " " +ef.value(ga.getOptimal()));
+            csvWriter.write(" ");
+            csvWriter.nextRecord();
+
+            csvWriter.close();
+            System.out.println(inputs[i] + " " + ef.value(ga.getOptimal()));
         }
-
-        csvWriter.close();
-
     }
 }
