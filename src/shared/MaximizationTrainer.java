@@ -63,5 +63,4 @@ public class MaximizationTrainer implements Trainer{
 
         return evaluations;
     }
-
 }

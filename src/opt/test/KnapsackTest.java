@@ -53,7 +53,7 @@ public class KnapsackTest {
         NeighborFunction nf = new DiscreteChangeOneNeighbor(ranges);
         MutationFunction mf = new DiscreteChangeOneMutation(ranges);
         CrossoverFunction cf = new UniformCrossOver();
-        Distribution df = new DiscreteDependencyTree(.1, ranges); 
+        Distribution df = new DiscreteDependencyTree(.1, ranges);
         HillClimbingProblem hcp = new GenericHillClimbingProblem(ef, odd, nf);
         GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
         ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);

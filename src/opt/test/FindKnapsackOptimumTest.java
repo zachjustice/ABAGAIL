@@ -6,7 +6,6 @@ import opt.EvaluationFunction;
 import opt.example.KnapsackEvaluationFunction;
 import opt.ga.*;
 import shared.FixedIterationTrainer;
-import shared.writer.CSVWriter;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,12 +28,10 @@ public class FindKnapsackOptimumTest {
     public static void main(String[] args) throws IOException {
 
         String[] fields = {"iterations", "optimum"};
-        int[] inputs = {10,20,30};
+        int[] inputs = {40,50,60};
         int[] iterations = {100000, 100000, 100000};
 
         for(int i = 0; i < 3; i++) {
-            CSVWriter csvWriter = new CSVWriter("find_optimum_knapsack_" + inputs[i] + ".csv", fields);
-            csvWriter.open();
             System.out.println("Knapsack size: " + inputs[i]);
 
             int knapsackSize = inputs[i];
@@ -58,23 +55,16 @@ public class FindKnapsackOptimumTest {
             StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
 
             int cumulative_iterations = 0;
-            for(int j = 100; j <= iterations[i]; j+= 100) {
-                FixedIterationTrainer fit = new FixedIterationTrainer(ga, 100);
+            int step = 500;
+            for(int j = step; j <= iterations[i]; j+= step) {
+                FixedIterationTrainer fit = new FixedIterationTrainer(ga, step);
                 fit.train();
 
-                cumulative_iterations += 100;
+                cumulative_iterations += step;
                 double optimum = ef.value(ga.getOptimal());
-                csvWriter.write(cumulative_iterations+"");
-                csvWriter.write(optimum+"");
-                csvWriter.nextRecord();
 
                 System.out.println("cumulative_iterations: " + cumulative_iterations + ", optimum " + optimum );
             }
-
-            csvWriter.write(" ");
-            csvWriter.nextRecord();
-
-            csvWriter.close();
         }
     }
 }

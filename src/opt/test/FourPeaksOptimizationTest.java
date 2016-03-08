@@ -23,6 +23,7 @@ public class FourPeaksOptimizationTest {
     private static final int N = 200;
 
     public static void main(String[] args) throws IOException {
+        System.out.println("inputs, iterations, optimum, time");
         for(int t = 10; t <= 50; t+= 10) {
             int[] ranges = new int[N];
             Arrays.fill(ranges, 2);
@@ -35,9 +36,8 @@ public class FourPeaksOptimizationTest {
             HillClimbingProblem hcp = new GenericHillClimbingProblem(ef, odd, nf);
             GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
             ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
-            System.out.println("T: " + t);
 
-
+            /*
             // Test Randomized Hill Climbing
             RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
 
@@ -74,17 +74,18 @@ public class FourPeaksOptimizationTest {
 
             System.out.println("GA: " + evaluations + ", " + optimum + ", " + time);
 
+*/
             // Test MIMIC
             MIMIC mimic = new MIMIC(200, 20, pop);
 
-            start = System.nanoTime();
-            fit = new MaximizationTrainer(mimic, ef, 200);
-            evaluations = fit.train();
-            end = System.nanoTime();
-            optimum = ef.value(mimic.getOptimal());
-            time = ( end - start ) / Math.pow(10, 9);
+            double start = System.nanoTime();
+            MaximizationTrainer fit = new MaximizationTrainer(mimic, ef, 200);
+            double evaluations = fit.train();
+            double end = System.nanoTime();
+            double optimum = ef.value(mimic.getOptimal());
+            double time = ( end - start ) / Math.pow(10, 9);
 
-            System.out.println("MIMIC: " + evaluations + ", " + optimum + ", " + time);
+            System.out.println(t + ", " + evaluations + ", " + optimum + ", " + time);
         }
     }
 }
