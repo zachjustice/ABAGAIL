@@ -24,7 +24,7 @@ public class CSVWriter implements Writer {
     public CSVWriter(String fileName, String[] fields) {
         this.fileName = fileName;
         this.fields   = Arrays.asList(fields);
-        this.buffer   = new ArrayList<String>();
+        this.buffer   = new ArrayList<>();
     }
 
     @Override
@@ -34,12 +34,12 @@ public class CSVWriter implements Writer {
 
     @Override
     public void open() throws IOException {
-        this.fileWriter = new FileWriter(fileName);
+        this.fileWriter = new FileWriter(fileName, true);
         writeRow(this.fields);
     }
 
     /**
-     * @param toWrite
+     * @param toWrite list of strings to write to the csv file
      * @throws IOException
      */
     private void writeRow(List<String> toWrite) throws IOException {

@@ -55,7 +55,10 @@ public class MaximizationTrainer implements Trainer{
                 bestOptimum = currOptimum;
             }
 
-            //System.out.println("Evaluations: " + evaluations + " CurrOptimium: " + currOptimum + " bestOptimum: " + bestOptimum);
+            /*
+            if (Math.floorMod(evaluations,1000) == 0 )
+                System.out.println("Evaluations: " + evaluations + " CurrOptimium: " + currOptimum + " bestOptimum: " + bestOptimum);
+            */
         }
 
         return evaluations;

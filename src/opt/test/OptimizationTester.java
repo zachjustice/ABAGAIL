@@ -44,30 +44,30 @@ public class OptimizationTester {
                 Trainer fit = new FixedIterationTrainer(rhc, i);
                 fit.train();
                 results[0][(i / iterationStep) - 1][j] = ef.value(rhc.getOptimal());
-                //System.out.println(ef.value(rhc.getOptimal()));
+                System.out.println(ef.value(rhc.getOptimal()));
 
                 SimulatedAnnealing sa = new SimulatedAnnealing(100, .95, hcp);
                 fit = new FixedIterationTrainer(sa, i);
                 fit.train();
                 results[1][(i / iterationStep) - 1][j] = ef.value(sa.getOptimal());
-                //System.out.println(ef.value(sa.getOptimal()));
+                System.out.println(ef.value(sa.getOptimal()));
 
                 StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
                 fit = new FixedIterationTrainer(ga, i);
                 fit.train();
                 results[2][(i / iterationStep) - 1][j] = ef.value(ga.getOptimal());
-                //System.out.println(ef.value(ga.getOptimal()));
+                System.out.println(ef.value(ga.getOptimal()));
 
                 MIMIC mimic = new MIMIC(200, 100, pop);
                 fit = new FixedIterationTrainer(mimic, i);
                 fit.train();
                 results[3][(i / iterationStep) - 1][j] = ef.value(mimic.getOptimal());
-                //System.out.println(ef.value(mimic.getOptimal()));
+                System.out.println(ef.value(mimic.getOptimal()));
             }
             System.out.println();
         }
 
-        writeResults(results, numIterations, iterationStep, numRepeats);
+        //writeResults(results, numIterations, iterationStep, numRepeats);
     }
 
     public Double[][] simpleMaximizationTest(EvaluationFunction ef, double maximizationValue) {
@@ -89,7 +89,7 @@ public class OptimizationTester {
         results[1][0] = fit.train();
         end = System.nanoTime();
         results[1][1] = (end - start)/ Math.pow(10,9);
-        results[1][2] = ef.value(rhc.getOptimal());
+        results[1][2] = ef.value(sa.getOptimal());
 
         System.out.println("testing GA");
         StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
@@ -98,7 +98,7 @@ public class OptimizationTester {
         results[2][0] = fit.train();
         end = System.nanoTime();
         results[2][1] = (end - start)/ Math.pow(10,9);
-        results[2][2] = ef.value(rhc.getOptimal());
+        results[2][2] = ef.value(ga.getOptimal());
 
         System.out.println("testing MIMIC");
         MIMIC mimic = new MIMIC(200, 100, pop);
@@ -107,7 +107,7 @@ public class OptimizationTester {
         results[3][0] = fit.train();
         end = System.nanoTime();
         results[3][1] = (end - start)/ Math.pow(10,9);
-        results[3][2] = ef.value(rhc.getOptimal());
+        results[3][2] = ef.value(mimic.getOptimal());
 
         return results;
     }

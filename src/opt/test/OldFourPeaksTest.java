@@ -11,22 +11,21 @@ import opt.prob.MIMIC;
 import opt.prob.ProbabilisticOptimizationProblem;
 import shared.MaximizationTrainer;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 /**
  * Copied from ContinuousPeaksTest
  * @version 1.0
  */
-public class FourPeaksOptimizationTest {
+public class OldFourPeaksTest {
     /** The n value */
     private static final int N = 200;
 
-    public static void main(String[] args) throws IOException {
-        for(int t = 10; t <= 50; t+= 10) {
+    public static void main(String[] args) {
+        for(int i = 10; i <= 50; i+= 10) {
             int[] ranges = new int[N];
             Arrays.fill(ranges, 2);
-            EvaluationFunction ef = new FourPeaksEvaluationFunction(t);
+            EvaluationFunction ef = new FourPeaksEvaluationFunction(i);
             Distribution odd = new DiscreteUniformDistribution(ranges);
             NeighborFunction nf = new DiscreteChangeOneNeighbor(ranges);
             MutationFunction mf = new DiscreteChangeOneMutation(ranges);
@@ -35,57 +34,26 @@ public class FourPeaksOptimizationTest {
             HillClimbingProblem hcp = new GenericHillClimbingProblem(ef, odd, nf);
             GeneticAlgorithmProblem gap = new GenericGeneticAlgorithmProblem(ef, odd, mf, cf);
             ProbabilisticOptimizationProblem pop = new GenericProbabilisticOptimizationProblem(ef, odd, df);
-            System.out.println("T: " + t);
 
-
-            // Test Randomized Hill Climbing
             RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
-
-            double start = System.nanoTime();
             MaximizationTrainer fit = new MaximizationTrainer(rhc, ef, 200);
-            double evaluations = fit.train();
-            double end = System.nanoTime();
-            double optimum = ef.value(rhc.getOptimal());
-            double time = ( end - start ) / Math.pow(10, 9);
+            fit.train();
+            System.out.println("RHC: " + ef.value(rhc.getOptimal()));
 
-            System.out.println("RHC: " + evaluations + ", " + optimum + ", " + time);
-
-            // Test Simulated Annealing
             SimulatedAnnealing sa = new SimulatedAnnealing(1E11, .95, hcp);
-
-            start = System.nanoTime();
             fit = new MaximizationTrainer(sa, ef, 200);
-            evaluations = fit.train();
-            end = System.nanoTime();
-            optimum = ef.value(sa.getOptimal());
-            time = ( end - start ) / Math.pow(10, 9);
+            fit.train();
+            System.out.println("SA: " + ef.value(sa.getOptimal()));
 
-            System.out.println("SA: " + evaluations + ", " + optimum + ", " + time);
-
-            // Test genetic algorithm
             StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 100, 10, gap);
-
-            start = System.nanoTime();
             fit = new MaximizationTrainer(ga, ef, 200);
-            evaluations = fit.train();
-            end = System.nanoTime();
-            optimum = ef.value(ga.getOptimal());
-            time = ( end - start ) / Math.pow(10, 9);
+            fit.train();
+            System.out.println("GA: " + ef.value(ga.getOptimal()));
 
-            System.out.println("GA: " + evaluations + ", " + optimum + ", " + time);
-
-            // Test MIMIC
             MIMIC mimic = new MIMIC(200, 20, pop);
-
-            start = System.nanoTime();
             fit = new MaximizationTrainer(mimic, ef, 200);
-            evaluations = fit.train();
-            end = System.nanoTime();
-            optimum = ef.value(mimic.getOptimal());
-            time = ( end - start ) / Math.pow(10, 9);
-
-            System.out.println("MIMIC: " + evaluations + ", " + optimum + ", " + time);
+            fit.train();
+            System.out.println("MIMIC: " + ef.value(mimic.getOptimal()));
         }
     }
 }
-
