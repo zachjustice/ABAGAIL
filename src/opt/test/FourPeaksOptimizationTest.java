@@ -33,11 +33,11 @@ public class FourPeaksOptimizationTest {
         CrossoverFunction cf = new SingleCrossOver();
         Distribution df = new DiscreteDependencyTree(.1, ranges);
 
-        String[] fields = {"algorithm", "iterations", "time", "optimum"};
+        String[] fields = {""};
         CSVWriter csvWriter = new CSVWriter("fourpeaks_optimization_test_results.csv", fields);
         csvWriter.open();
 
-        for(int t=10; t <=20; t+=10) {
+        for(int t=30; t <=80; t+=10) {
             System.out.println("T: " + t);
             EvaluationFunction ef = new FourPeaksEvaluationFunction(t);
             HillClimbingProblem hcp = new GenericHillClimbingProblem(ef, odd, nf);

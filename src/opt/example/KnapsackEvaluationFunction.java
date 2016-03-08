@@ -1,8 +1,8 @@
 package opt.example;
 
-import util.linalg.Vector;
 import opt.EvaluationFunction;
 import shared.Instance;
+import util.linalg.Vector;
 
 /**
  * A checker board evaluation function
@@ -14,7 +14,7 @@ public class KnapsackEvaluationFunction implements EvaluationFunction {
     /**
      * The weights for the things that can be put in the sack
      */
-    private double[] weights;
+    private double[] values;
     
     /**
      * The volumes for the things that can be put in the sack
@@ -24,7 +24,7 @@ public class KnapsackEvaluationFunction implements EvaluationFunction {
     /**
      * The maximum volume in the knapsack
      */
-    private double maxVolume;
+    private double knapsackVolume;
     
     /**
      * The maximum sum of all items
@@ -33,16 +33,16 @@ public class KnapsackEvaluationFunction implements EvaluationFunction {
     
     /**
      * Make a new knapsack evaluation function
-     * @param w the set of values
+     * @param values the set of values
      * @param v the set of volumes
-     * @param maxV the maximum volumes
+     * @param knapsackVolume volume of the knapsack
      * @param maxC the maximum counts
      */
-    public KnapsackEvaluationFunction(double[] w, double[] v, double maxV,
+    public KnapsackEvaluationFunction(double[] values, double[] v, double knapsackVolume,
             int[] maxC) {
-        weights = w;
-        volumes = v;
-        maxVolume = maxV;
+        this.values = values;
+        this.volumes = v;
+        this.knapsackVolume = knapsackVolume;
         for (int i = 0; i < v.length; i++) {
             maxVolumeSum += maxC[i] * v[i];
         }
@@ -57,9 +57,9 @@ public class KnapsackEvaluationFunction implements EvaluationFunction {
         double value = 0;
         for (int i = 0; i < data.size(); i++) {
             volume += volumes[i] * data.get(i);
-            value += weights[i] * data.get(i);
+            value += values[i] * data.get(i);
         }
-        if (volume > maxVolume) {
+        if (volume > knapsackVolume) {
             double smallNumber = 1E-10;
             return smallNumber*(maxVolumeSum - volume);
         } else {

@@ -73,6 +73,7 @@ public class OptimizationTester {
     public Double[][] simpleMaximizationTest(EvaluationFunction ef, double maximizationValue) {
         Double[][] results = new Double[4][3];
 
+        System.out.println("testing RHC");
         RandomizedHillClimbing rhc = new RandomizedHillClimbing(hcp);
         Trainer fit = new MaximizationTrainer(rhc, ef, maximizationValue);
         double start = System.nanoTime();
@@ -81,6 +82,7 @@ public class OptimizationTester {
         results[0][1] = (end - start)/ Math.pow(10,9);
         results[0][2] = ef.value(rhc.getOptimal());
 
+        System.out.println("testing SA");
         SimulatedAnnealing sa = new SimulatedAnnealing(100, .95, hcp);
         fit = new MaximizationTrainer(sa, ef, maximizationValue);
         start = System.nanoTime();
@@ -89,6 +91,7 @@ public class OptimizationTester {
         results[1][1] = (end - start)/ Math.pow(10,9);
         results[1][2] = ef.value(rhc.getOptimal());
 
+        System.out.println("testing GA");
         StandardGeneticAlgorithm ga = new StandardGeneticAlgorithm(200, 150, 25, gap);
         fit = new MaximizationTrainer(ga, ef, maximizationValue);
         start = System.nanoTime();
@@ -97,6 +100,7 @@ public class OptimizationTester {
         results[2][1] = (end - start)/ Math.pow(10,9);
         results[2][2] = ef.value(rhc.getOptimal());
 
+        System.out.println("testing MIMIC");
         MIMIC mimic = new MIMIC(200, 100, pop);
         fit = new MaximizationTrainer(mimic, ef, maximizationValue);
         start = System.nanoTime();

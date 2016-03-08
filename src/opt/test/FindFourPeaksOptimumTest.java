@@ -29,7 +29,7 @@ public class FindFourPeaksOptimumTest {
         int[] inputs = {30,40,50,60,70,80};
         int[] iterations = {200000, 250000, 250000, 400000, 800000, 1100000 };
 
-        CSVWriter csvWriter = new CSVWriter("optimum_fourpeaks.csv", fields);
+        CSVWriter csvWriter = new CSVWriter("found_optimum_fourpeaks_with_SA.csv", fields);
         csvWriter.open();
 
         for(int i = 0; i < 6; i++) {
